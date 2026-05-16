@@ -1,10 +1,13 @@
+import GiftForm from "./components/GiftForm";
+
 function App() {
   return (
     <div className="min-h-screen bg-rose-50 flex items-center justify-center">
+      <GiftForm />
       <h1 className="text-3xl font-bold text-rose-500">PlanIt 🎁</h1>
     </div>
   )
 }
 
-export default App
+export default App;
 
