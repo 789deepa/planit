@@ -4,7 +4,7 @@ function GiftForm() {
         <form>
     <div className="w-full p-2 rounded border border-rose-200 mb-4">
         <h2>Select the gift for your loved once</h2>
-        <label htmlFor="giftName" >Person</label>
+        <label htmlFor="giftName">Person</label>
         <select id="giftName" name="giftName" className="w-full p-2 rounded border border-rose-200 mb-4">
             <option value="person1">Mother</option>
             <option value="person2">Father</option>
@@ -23,6 +23,8 @@ function GiftForm() {
         <select id="occasion" name="occasion" className="w-full p-2 rounded border border-rose-200 mb-4">
             <option value="person1">Birthday</option>
             <option value="person2">Anniversary</option>
+            <option value="person2">Surprise</option>
+            <option value="person2">Gratitude</option>
              <option value="person8">Other</option>
         </select>
 
