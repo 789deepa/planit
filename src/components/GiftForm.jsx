@@ -1,42 +1,61 @@
+import { useState } from "react";
+
 function GiftForm() {
+
+    const [formData, setFormData] = useState({
+        person : "",
+        occasion : "",
+        interests : "",
+    });
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name] : e.target.value,
+        });
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        console.log(formData);
+    }
+
     return (
 
-        <form>
-    <div className="w-full p-2 rounded border border-rose-200 mb-4">
-        <h2>Select the gift for your loved once</h2>
-        <label htmlFor="giftName">Person</label>
-        <select id="giftName" name="giftName" className="w-full p-2 rounded border border-rose-200 mb-4">
-            <option value="person1">Mother</option>
-            <option value="person2">Father</option>
-            <option value="person3">Girlfriend</option>
-            <option value="person3">Boyfriend</option>
-            <option value="person4">Brother</option>
-            <option value="person5">Sister</option>
-             <option value="person6">Friend</option>
-             <option value="person7">Colleague</option>
-             <option value="person3">Husband</option>
-             <option value="person3">Wife</option>
-             <option value="person8">Other</option>
-        </select>
+        <form onSubmit={handleSubmit}>
+            <select
+                name = "person"
+                placeholder="Who is this gift for ? "
+                value = {formData.person}
+                onChange={handleChange}
+                className="w-full p-2 rounded border border-rose-200 mb-4"
+            >
 
-        <label htmlFor="occasion" >Occasion</label>
-        <select id="occasion" name="occasion" className="w-full p-2 rounded border border-rose-200 mb-4">
-            <option value="person1">Birthday</option>
-            <option value="person2">Anniversary</option>
-            <option value="person2">Surprise</option>
-            <option value="person2">Gratitude</option>
-             <option value="person8">Other</option>
-        </select>
+                <option value="">Select an option</option>
+                <option value="mother">Mother</option>
+                <option value="father">Father</option>
+                <option value="girlfriend">Girlfriend</option>
+                <option value="boyfriend">Boyfriend</option>
+                <option value="wife">Wife</option>
+                <option value="husband">Husband</option>
+                <option value="sister">Sister</option>
+                <option value="brother">Brother</option>
+                <option value="friend">Friend</option>
+                <option value="colleague">Colleague</option>
+                <option value="other">Other</option>
+            </select>
 
-        <label htmlFor="interests" >Interests</label>
-        <textarea id="interests" placeholder="e.g. loves handmade stuff, books, travel..." className="w-full p-2 rounded border border-rose-200 mb-4" />
 
-        <button type="submit" className="w-full bg-rose-500 text-white p-2 rounded hover:bg-rose-600 transition">Get Gift Ideas</button>
+            <button 
+                type="submit" 
+                className="w-full bg-rose-500 text-white py-3 px-4 rounded-xl font-semibold shadow-md hover:bg-rose-600 hover:shadow-lg transition-all duration-200"
+            >Get Gift Ideas
+            </button>
 
-    </div>
+    
         </form>
     )
 }
 
 export default GiftForm;
-
