@@ -1,9 +1,10 @@
 import GiftForm from "./components/GiftForm";
-import mockData from "./data/mockData.js";
+import mockGiftData from "./data/mockGiftData.js";
+import GiftCard from "./components/GiftCard";
 
 function App() {
 
-  console.log(mockData);
+  console.log(mockGiftData);
   return (
     <div className="min-h-screen bg-rose-50 flex flex-col items-center justify-center">
 
@@ -17,6 +18,15 @@ function App() {
 
       <div className="bg-white rounded-3xl shadow-xl p-8 w-full max-w-xl">
        <GiftForm />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 m-4">
+        {mockGiftData.map((gift) => (
+          <GiftCard 
+          key={gift.id}
+          gift={gift}
+          />
+        ))}
       </div>
       
     </div>
