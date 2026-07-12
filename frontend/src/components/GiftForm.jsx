@@ -15,10 +15,20 @@ function GiftForm() {
         });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(formData);
+        const response = await fetch("http://localhost:5000/api/gifts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
     }
 
     return (
