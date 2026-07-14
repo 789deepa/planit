@@ -13,11 +13,27 @@ app.get("/", (req, res) => {
 const PORT = 5000;
 
 app.post("/api/gifts", (req, res) => {
-    console.log(req.body);
+  console.log("Received data:", req.body);
 
-    res.json({
-        message: "Request recieved!",
-    });
+  res.json({
+    gifts: [
+      {
+        id: 1,
+        name: "Handmade Photo Album",
+        instructions: "Collect photos and decorate each page with memories."
+      },
+      {
+        id: 2,
+        name: "Personalized Mug",
+        instructions: "Print their favorite photo or quote on a mug."
+      },
+      {
+        id: 3,
+        name: "DIY Memory Jar",
+        instructions: "Fill a jar with handwritten memories."
+      }
+    ]
+  });
 });
 
 app.listen(PORT, () => {
