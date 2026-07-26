@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function DynamicForm({ mode }) {
+  const navigate = useNavigate();
+
   // Gift Form States
   const [giftData, setGiftData] = useState({
     person: "",
@@ -41,9 +44,10 @@ function DynamicForm({ mode }) {
       setIsLoading(false);
       const outputData = mode === "gift" ? giftData : dateData;
       console.log(`Generating Plan for ${mode}:`, outputData);
-      alert(`Redirection / API generation simulated! Output: ${JSON.stringify(outputData, null, 2)}`);
+      navigate("/results");
     }, 1500);
   };
+
 
   return (
     <div className="max-w-xl mx-auto px-6 mb-20">
