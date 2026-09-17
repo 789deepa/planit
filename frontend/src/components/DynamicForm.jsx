@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const LOADING_MESSAGES = [
   "Understanding your preferences...",
@@ -69,7 +70,8 @@ function DynamicForm({ mode, setGiftResults }) {
     
     try {
       const isGift = mode === "gift";
-      const url = isGift ? "http://localhost:5000/api/gifts" : "http://localhost:5000/api/dates";
+      const url = isGift ? `${API_URL}/api/gifts`
+  : `${API_URL}/api/dates`;
       const bodyData = isGift ? giftData : dateData;
 
       const response = await fetch(url, {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function GiftForm() {
 
@@ -18,7 +19,7 @@ function GiftForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:5000/api/gifts", {
+        const response = await fetch(`${API_URL}/api/gifts`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
