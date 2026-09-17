@@ -5,7 +5,7 @@ import ModeSelector from "../components/ModeSelector";
 import DynamicForm from "../components/DynamicForm";
 import Footer from "../components/Footer";
 
-function Home() {
+function Home({ setGiftResults }) {
   const [selectedMode, setSelectedMode] = useState("gift");
 
   return (
@@ -21,7 +21,7 @@ function Home() {
         <ModeSelector selectedMode={selectedMode} setSelectedMode={setSelectedMode} />
 
         {/* Dynamic Form fields */}
-        <DynamicForm mode={selectedMode} />
+        <DynamicForm mode={selectedMode} setGiftResults={setGiftResults} />
       </main>
 
       {/* Footer */}

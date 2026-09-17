@@ -2,8 +2,21 @@ import React, { useState } from "react";
 import Badge from "./Badge";
 import ExpandableSection from "./ExpandableSection";
 
+const DEFAULT_FALLBACK_IMAGE = "https://images.unsplash.com/photo-1513829096970-cf9989577a5a?q=80&w=600&auto=format&fit=crop";
+
+function getValidImageSrc(url) {
+  if (!url || typeof url !== "string") return DEFAULT_FALLBACK_IMAGE;
+  const trimmed = url.trim();
+  const lower = trimmed.toLowerCase();
+  if (lower === "noimg" || lower === "undefined" || lower === "null" || lower === "") {
+    return DEFAULT_FALLBACK_IMAGE;
+  }
+  return trimmed;
+}
+
 function GiftCard({ gift }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [imgSrc, setImgSrc] = useState(() => getValidImageSrc(gift.image));
 
   return (
     <div
@@ -14,10 +27,15 @@ function GiftCard({ gift }) {
       {/* 1. Image Container */}
       <div className={`relative overflow-hidden w-full ${gift.aspectRatio || "aspect-[3/4]"}`}>
         <img
-          src={gift.image}
-          alt={gift.name}
+          src={imgSrc}
+          alt={gift.name || "PlanIt Idea"}
           className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-[1.03]"
           loading="lazy"
+          onError={() => {
+            if (imgSrc !== DEFAULT_FALLBACK_IMAGE) {
+              setImgSrc(DEFAULT_FALLBACK_IMAGE);
+            }
+          }}
         />
         {/* Floating Category Tag */}
         {gift.category && (
@@ -26,6 +44,7 @@ function GiftCard({ gift }) {
           </div>
         )}
       </div>
+
 
       {/* 2. Content Container - 24px padding */}
       <div className="p-6 flex flex-col text-left">

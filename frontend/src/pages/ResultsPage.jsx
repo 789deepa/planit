@@ -5,8 +5,11 @@ import Footer from "../components/Footer";
 import GiftGrid from "../components/GiftGrid";
 import mockGiftData from "../data/mockGiftData";
 
-function ResultsPage() {
+function ResultsPage({ giftResults }) {
   const navigate = useNavigate();
+
+  // Fallback to mock data if no results generated yet
+  const displays = giftResults && giftResults.length > 0 ? giftResults : mockGiftData;
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-bg text-brand-text font-sans antialiased selection:bg-brand-secondary/40 selection:text-brand-primary">
@@ -34,15 +37,16 @@ function ResultsPage() {
                 Gift Ideas for Your Loved One
               </h1>
               <p className="text-brand-muted text-sm sm:text-base">
-                {mockGiftData.length} personalized ideas generated for you.
+                {displays.length} personalized ideas generated for you.
               </p>
             </div>
           </div>
         </section>
 
         {/* Masonry Gift Grid */}
-        <GiftGrid gifts={mockGiftData} />
+        <GiftGrid gifts={displays} />
       </main>
+
 
       {/* Shared Footer */}
       <Footer />

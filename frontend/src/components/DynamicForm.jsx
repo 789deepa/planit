@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function DynamicForm({ mode }) {
+const LOADING_MESSAGES = [
+  "Understanding your preferences...",
+  "Finding thoughtful ideas...",
+  "Creating your personalized plans..."
+];
+
+function DynamicForm({ mode, setGiftResults }) {
   const navigate = useNavigate();
 
   // Gift Form States
@@ -20,6 +26,27 @@ function DynamicForm({ mode }) {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
+
+  useEffect(() => {
+    let interval = null;
+    if (isLoading) {
+      setLoadingStep(0);
+      interval = setInterval(() => {
+        setLoadingStep((prev) => {
+          if (prev < LOADING_MESSAGES.length - 1) {
+            return prev + 1;
+          }
+          return prev;
+        });
+      }, 1200);
+    } else {
+      setLoadingStep(0);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isLoading]);
 
   const handleGiftChange = (e) => {
     setGiftData({
@@ -35,18 +62,48 @@ function DynamicForm({ mode }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isLoading) return; // Prevent duplicate API requests
     setIsLoading(true);
     
-    // Simulate short loading to demonstrate the loading-ready structure
-    setTimeout(() => {
-      setIsLoading(false);
-      const outputData = mode === "gift" ? giftData : dateData;
-      console.log(`Generating Plan for ${mode}:`, outputData);
+    try {
+      const isGift = mode === "gift";
+      const url = isGift ? "http://localhost:5000/api/gifts" : "http://localhost:5000/api/dates";
+      const bodyData = isGift ? giftData : dateData;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bodyData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to generate ideas. Please try again.");
+      }
+
+      const data = await response.json();
+      
+      // Store the generated ideas in parent state
+      if (data && Array.isArray(data.gifts)) {
+        setGiftResults(data.gifts);
+      } else {
+        throw new Error("Invalid response format from server.");
+      }
+
       navigate("/results");
-    }, 1500);
+    } catch (err) {
+      console.error("API error:", err);
+      alert(err.message || "Something went wrong. Please check if your backend server is running and your API key is configured.");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+
 
 
   return (
@@ -224,16 +281,20 @@ function DynamicForm({ mode }) {
         )}
 
         {/* Generate Ideas Button */}
-        <div className="mt-8 flex justify-center">
+        <div className="mt-8 flex flex-col items-center gap-3">
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full sm:w-auto px-8 py-4 bg-brand-primary text-white font-medium text-base rounded-full shadow-lg shadow-brand-primary/15 hover:bg-brand-primary/95 hover:shadow-brand-primary/20 hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 flex items-center justify-center gap-2 group"
+            className={`w-full sm:w-auto min-h-[56px] px-8 py-4 bg-brand-primary text-white font-medium text-base rounded-full shadow-lg shadow-brand-primary/15 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-primary/30 flex items-center justify-center gap-2 group ${
+              isLoading
+                ? "cursor-not-allowed opacity-90 scale-[0.99]"
+                : "hover:bg-brand-primary/95 hover:shadow-brand-primary/20 hover:-translate-y-0.5 active:translate-y-0"
+            }`}
           >
             {isLoading ? (
               <>
                 <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  className="animate-spin -ml-1 mr-2.5 h-5 w-5 text-white flex-shrink-0"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -252,7 +313,12 @@ function DynamicForm({ mode }) {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                <span>Curating plans...</span>
+                <span
+                  key={loadingStep}
+                  className="animate-fade-in inline-block min-w-[240px] text-center font-medium"
+                >
+                  {LOADING_MESSAGES[loadingStep]}
+                </span>
               </>
             ) : (
               <>
@@ -263,6 +329,13 @@ function DynamicForm({ mode }) {
               </>
             )}
           </button>
+
+          {isLoading && (
+            <p className="text-xs text-brand-muted animate-fade-in flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse"></span>
+              <span>Our AI is tailoring recommendations specifically for you...</span>
+            </p>
+          )}
         </div>
       </form>
     </div>

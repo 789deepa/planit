@@ -1,42 +1,25 @@
+require("dotenv").config({ path: require("path").resolve(__dirname, ".env") });
 const express = require("express");
 const cors = require("cors");
+const giftRoutes = require("./routes/giftRoutes");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+// Health Check Route
 app.get("/", (req, res) => {
     res.send("Planit API is running");
 });
 
-const PORT = 5000;
+// Mount routes
+app.use("/api", giftRoutes);
 
-app.post("/api/gifts", (req, res) => {
-  console.log("Received data:", req.body);
-
-  res.json({
-    gifts: [
-      {
-        id: 1,
-        name: "Handmade Photo Album",
-        instructions: "Collect photos and decorate each page with memories."
-      },
-      {
-        id: 2,
-        name: "Personalized Mug",
-        instructions: "Print their favorite photo or quote on a mug."
-      },
-      {
-        id: 3,
-        name: "DIY Memory Jar",
-        instructions: "Fill a jar with handwritten memories."
-      }
-    ]
-  });
-});
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`);
 });
+
 
