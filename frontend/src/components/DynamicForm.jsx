@@ -229,9 +229,9 @@ function DynamicForm({ mode, setGiftResults }) {
                 className="w-full px-4 py-3 bg-brand-bg/50 border border-brand-secondary/40 rounded-xl text-brand-text text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary hover:border-brand-primary/50 transition-all duration-200"
               >
                 <option value="" disabled>Select a budget level</option>
-                <option value="free">Free / Low Cost ($)</option>
-                <option value="moderate">Moderate ($$)</option>
-                <option value="splurge">Splurge ($$$)</option>
+                <option value="free">Free / Low Cost (₹)</option>
+                <option value="moderate">Moderate (₹₹)</option>
+                <option value="splurge">Luxury (₹₹₹)</option>
               </select>
             </div>
 
@@ -249,7 +249,7 @@ function DynamicForm({ mode, setGiftResults }) {
                 name="location"
                 value={dateData.location}
                 onChange={handleDateChange}
-                placeholder="e.g., Brooklyn, NY / Cozy Indoor / Beachfront..."
+                placeholder="e.g., Nashik, cafe, Banglore Park..."
                 required
                 className="w-full px-4 py-3 bg-brand-bg/50 border border-brand-secondary/40 rounded-xl text-brand-text text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary hover:border-brand-primary/50 transition-all duration-200 placeholder-brand-muted/60"
               />

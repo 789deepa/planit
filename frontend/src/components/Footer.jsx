@@ -25,7 +25,7 @@ function Footer() {
         {/* GitHub Link */}
         <div>
           <a
-            href="https://github.com"
+            href="https://github.com/789deepa"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs font-semibold text-brand-text/80 hover:text-brand-primary transition-colors duration-200"

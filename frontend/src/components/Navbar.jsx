@@ -23,7 +23,7 @@ function Navbar() {
             About
           </a>
           <a
-            href="https://github.com"
+            href="https://github.com/789deepa"
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm font-medium text-brand-text/85 hover:text-brand-primary transition-colors duration-200 flex items-center gap-1.5 group/git"
